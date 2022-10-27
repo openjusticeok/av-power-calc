@@ -4,5 +4,7 @@ This file contains power calculations and data sets related to Oklahoma Policy I
 
 To run the power calculations in `power_calculations.R`, first install dependencies:
 
-`install.packages("tidyverse")
-install.packages("rdpower")`
+```
+install.packages("tidyverse")
+install.packages("rdpower")
+```
