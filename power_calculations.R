@@ -1,8 +1,9 @@
 library(tidyverse)
 library(rdpower)
+library(lubridate)
 
 # Hypothesis 1: Total fines at conviction ####
-fines <- read_csv("data/fines-data.csv")
+case_fine <- read_csv("data/fines-data.csv")
 
 # H1: Total fines on felony cases
 cf_fine_sample <- case_fine |>
@@ -26,9 +27,8 @@ cm_fine_sample <- case_fine |>
   ungroup() |> 
   as.data.frame()
 
-cm_fine_sample |> 
-  count(floor_date(date, "mo")) |> 
-  view()
+# cm_fine_sample |> 
+#   count(floor_date(date, "mo"))
 
 rdpower(data = cm_fine_sample[c("fine", 
                                 "since_covid")],
@@ -50,7 +50,7 @@ rdpower(data = cf_ff[c("total_fees",
         cluster = cf_ff$district,
         tau = 700)
 
-cm_ff <-total_fees |> 
+cm_ff <- total_fees |> 
   filter(str_detect(case_number, "CM")) |> 
   mutate(across(contains("date"), mdy)) |> 
   as.data.frame()
