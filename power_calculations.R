@@ -4,17 +4,6 @@ library(rdpower)
 # Hypothesis 1: Total fines at conviction ####
 fines <- read_csv("data/fines-data.csv")
 
-case_fine <- fines |>
-  filter(!is.na(amount)) |> 
-  group_by(district,
-           case_number,
-           date,
-           party = party |>
-             str_remove_all("\"| ") |>
-             str_extract("(?<=name:)\\d{1,20}")) |> 
-  summarize(fine = sum(amount),
-            n_fines = n())
-
 # H1: Total fines on felony cases
 cf_fine_sample <- case_fine |>
   mutate(since_covid = as.numeric(date) - 18337,
