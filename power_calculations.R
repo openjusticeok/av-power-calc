@@ -2,7 +2,7 @@ library(tidyverse)
 library(rdpower)
 
 # Hypothesis 1: Total fines at conviction ####
-fines <- read_csv("data/2022-10-12-fines-sample.csv")
+fines <- read_csv("data/fines-data.csv")
 
 case_fine <- fines |>
   filter(!is.na(amount)) |> 
@@ -74,6 +74,7 @@ rdpower(data = cm_ff[c("total_fees",
 
 # H1: Fee waivers
 waive <- read_csv("data/fee-waiver-data.csv") |> 
+  filter(date <= ymd("2020-09-30")) |> 
   count(month = floor_date(date, "month")) |> 
   mutate(since_covid = as.numeric(month) - 18377) |> 
   as.data.frame()
@@ -88,7 +89,8 @@ rdpower(data = waive[c("n", "since_covid")])
 warrants <- read_csv("data/warrants-data.csv")
 
 warrants_mo <- warrants |> 
-  count(district, month = floor_date(date, "quarter")) |> 
+  filter(date <= ymd("2020-09-30")) |> 
+  count(district, month = floor_date(date, "month")) |> 
   mutate(since_covid = as.numeric(month) - as.numeric(ymd("2020-03-01"))) |> 
   filter(year(month) >= 2016, month <= ymd("2022-01-01")) |> 
   as.data.frame()
